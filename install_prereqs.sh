@@ -9,5 +9,4 @@ echo "#####################"
 echo "# Installing Docker #"
 echo "#####################"
 sudo apt install docker.io docker-compose -y
-
-
+sudo usermod -aG docker $USER
