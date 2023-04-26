@@ -5,6 +5,15 @@ then
 	touch .env
 fi
 
+found=`cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "CODE_DIR" | wc -l` > /dev/null 2>&1
+if [ $found -gt 0 ]
+then
+	echo "Variable CODE_DIR, already defined"
+	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "CODE_DIR"
+else
+	echo "CODE_DIR=${PWD}" >> $PWD/.env
+	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "CODE_DIR"
+fi
 
 check_update_variable(){
 	found=`cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "${2}" | wc -l` > /dev/null 2>&1
