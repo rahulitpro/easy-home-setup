@@ -1,6 +1,7 @@
 # easy-home-setup
 
 need three domain entry
-CNAME wwww pointing to your domain name.
-@ pointing to public ipaddress pointing of your server
-* pointing to public ipaddress pointing of your server
+
+* CNAME record wwww pointing to your domain name.
+* A record @ pointing to public ipaddress of your server
+* A record * pointing to public ipaddress of your server
