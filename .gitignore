@@ -1,5 +1,5 @@
 gp.sh
 .env
-acme.json
-traefik_dynamic.toml
+cme.json
+*.toml$
 *.yml$

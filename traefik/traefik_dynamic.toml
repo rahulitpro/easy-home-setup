@@ -1,0 +1,22 @@
+################################################################
+# Traefix Dashboard with Let's encrypt certificate
+################################################################
+[http.routers.api]
+  rule = "Host(`traefik.intelwinds.com`)"
+  entrypoints = ["websecure"]
+  service = "api@internal"
+  [http.routers.api.tls]
+    certResolver = "lets-encrypt"
+
+
+###########################################################################
+# Public CIDR for home network to restrict some of the services from public
+###########################################################################
+[http.middlewares]
+  [http.middlewares.my-whitelist.ipWhiteList]
+    sourceRange = ["66.23.95.24/32"]
+
+[tcp.middlewares]
+  [tcp.middlewares.tcp-whitelist.ipWhiteList]
+    sourceRange = ["66.23.95.24/32"]
+
