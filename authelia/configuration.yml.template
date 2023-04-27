@@ -35,12 +35,10 @@ access_control:
   default_policy: deny
   rules:
     # Rules applied to everyone
-    - domain: ${TRAEFIK_SUBDOMAIN}.${DOMAIN} 
-      policy: two_factor 
-    - domain: ${AUTHELIA_SUBDOMAIN}.${DOMAIN} 
-      policy: two_factor 
-    - domain: pve1.local.example.com
-      policy: two_factor
+    #- domain: ${TRAEFIK_SUBDOMAIN}.${DOMAIN} 
+    #  policy: two_factor 
+    #- domain: ${AUTHELIA_SUBDOMAIN}.${DOMAIN} 
+    #  policy: two_factor 
 
 session:
   name: authelia_session
