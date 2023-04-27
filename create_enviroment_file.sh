@@ -11,7 +11,7 @@ then
 	echo "Variable CODE_DIR, already defined"
 	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "CODE_DIR"
 else
-	echo "CODE_DIR=${PWD}" >> $PWD/.env
+	echo "export CODE_DIR=${PWD}" >> $PWD/.env
 	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "CODE_DIR"
 fi
 
@@ -23,7 +23,7 @@ check_update_variable(){
 		cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "${2}" 
 	else
 		read -p "${1}" VALUE
-		echo "${2}=${VALUE}" >> $PWD/.env
+		echo "export ${2}=${VALUE}" >> $PWD/.env
 		cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "${2}"
 	fi
 }

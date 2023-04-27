@@ -1,14 +1,4 @@
 ################################################################
-# Certificate Resolver 
-################################################################
-
-[certificatesResolvers.lets-encrypt.acme]
-  email = "${LETSENCRYPT_EMAIL}"
-  storage = "acme.json"
-  [certificatesResolvers.lets-encrypt.acme.tlsChallenge]
-
-
-################################################################
 # Traefix Dashboard with Let's encrypt certificate
 ################################################################
 [http.routers.api]

@@ -13,6 +13,7 @@ modify ingress rules in security list/NSG in cloud
 
 Run PreReq script
 * sh install_prereqs.sh
+* relogin to the server to set docker as a group to current user
 
 Run script to create enviroment file .env
 * sh create_enviroment_file.sh  

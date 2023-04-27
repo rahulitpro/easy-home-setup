@@ -169,7 +169,7 @@
 ################################################################
 
 [certificatesResolvers.lets-encrypt.acme]
-  email = "rahul@intelwinds.com"
+  email = "${LETSENCRYPT_EMAIL}"
   storage = "acme.json"
   [certificatesResolvers.lets-encrypt.acme.tlsChallenge]
 
