@@ -1,6 +1,0 @@
-.gitignore
-gp.sh
-.env
-cme.json
-*.toml
-*.yml
