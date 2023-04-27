@@ -1,3 +1,4 @@
+.gitignore
 gp.sh
 .env
 cme.json
