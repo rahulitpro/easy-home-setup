@@ -3,3 +3,5 @@ gp.sh
 cme.json
 *.toml
 *.yml
+db.sqlite3
+*.txt

@@ -1,0 +1,16 @@
+---
+###############################################################
+#                         Users Database                      #
+###############################################################
+
+# This file can be used if you do not have an LDAP set up.
+
+# List of users
+users:
+  rahul:
+    displayname: "${DISPLAY_NAME}"
+    password: "${AUTHELIA_PASSWORD}"
+    email: "${LETSENCRYPT_EMAIL}"
+    groups:
+      - admins
+      - dev

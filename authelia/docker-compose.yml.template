@@ -1,0 +1,30 @@
+---
+version: '3'
+
+services:
+  authelia:
+    image: authelia/authelia
+    container_name: authelia
+    volumes:
+      - $CODE_DIR/authelia/config:/config
+    networks:
+      - web
+    labels:
+      - traefik.http.routers.authelia.rule=Host(`${AUTHELIA_SUBDOMAIN}.${DOMAIN}`)
+      - traefik.http.routers.authelia.entrypoints=websecure
+      - traefik.http.routers.authelia.tls=true
+      - traefik.http.routers.authelia.tls.certresolver=lets-encrypt
+      - traefik.http.services.authelia.loadbalancer.server.port=9091
+      - traefik.http.middlewares.authelia.forwardauth.address=http://authelia:9091/api/verify?rd=https://${AUTHELIA_SUBDOMAIN}.${DOMAIN}
+      - traefik.http.middlewares.authelia.forwardauth.trustForwardHeader=true
+      - traefik.http.middlewares.authelia.forwardauth.authResponseHeaders=Remote-User,Remote-Groups,Remote-Name,Remote-Email
+    expose:
+      - 9091
+    restart: unless-stopped
+    environment:
+      - TZ=${USER_TIMEZONE}
+    healthcheck:
+      disable: true
+networks:
+  web:
+    external: true

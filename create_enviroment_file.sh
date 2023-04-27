@@ -11,7 +11,7 @@ then
 	echo "Variable CODE_DIR, already defined"
 	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "CODE_DIR"
 else
-	echo "export CODE_DIR=${PWD}" >> $PWD/.env
+	echo "export CODE_DIR='${PWD}'" >> $PWD/.env
 	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "CODE_DIR"
 fi
 
@@ -23,12 +23,32 @@ check_update_variable(){
 		cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "${2}" 
 	else
 		read -p "${1}" VALUE
-		echo "export ${2}=${VALUE}" >> $PWD/.env
+		echo "export ${2}='${VALUE}'" >> $PWD/.env
 		cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "${2}"
 	fi
 }
 
+check_update_variable "Enter your display name (like Firstname Lastname) :" DISPLAY_NAME
 check_update_variable "Enter your email address for let's encrypt (like me@example.com) :" LETSENCRYPT_EMAIL
+check_update_variable "Enter your timezone (like America/Toronto) :" USER_TIMEZONE 
 check_update_variable "Enter your main domain name with tld (like example.com) :" DOMAIN
 check_update_variable "Enter your traefik subdomain name for traefik dashboard (like traefik) :" TRAEFIK_SUBDOMAIN
 check_update_variable "Enter your Public CIDR for home network to restrict some of the services from public (like 12.34.56.78/32) :" HOME_CIDR 
+check_update_variable "Enter your authelia subdomain name for authentication url (like auth) :" AUTHELIA_SUBDOMAIN 
+
+found=`cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "AUTHELIA_PASSWORD" | wc -l` > /dev/null 2>&1
+if [ $found -gt 0 ]
+then
+	echo "Variable AUTHELIA_PASSWORD, already defined"
+	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "AUTHELIA_PASSWORD"
+else
+	read -p "Enter your authelia password :" AUTHELIA_PASSWORD
+        AUTHELIA_PASSWORD=`docker run --name autheliapass authelia/authelia:latest authelia hash-password ${AUTHELIA_PASSWORD} | awk '{print $2}'`
+	echo "export AUTHELIA_PASSWORD='${AUTHELIA_PASSWORD}'" >> $PWD/.env
+	docker rm autheliapass
+	docker rmi authelia/authelia
+	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "AUTHELIA_PASSWORD"
+fi
+
+check_update_variable "Enter your authelia jwt secret :" AUTHELIA_JWT_SECRET 
+check_update_variable "Enter your authelia storage encryption key :" AUTHELIA_STORAGE_KEY 
