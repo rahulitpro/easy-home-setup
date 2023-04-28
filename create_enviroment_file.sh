@@ -89,3 +89,17 @@ fi
 check_update_variable "Enter your authelia jwt secret :" AUTHELIA_JWT_SECRET 
 check_update_variable "Enter your authelia storage encryption key :" AUTHELIA_STORAGE_KEY 
 check_update_variable "Enter your heimdell subdomain (like dash) :" HEIMDALL_SUBDOMAIN 
+
+found=`cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "SEARXNG_ULTRASECRET" | wc -l` > /dev/null 2>&1
+if [ $found -gt 0 ]
+then
+	echo "Variable SEARXNG_ULTRASECRET, already defined"
+	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "SEARXNG_ULTRASECRET"
+else
+	SEARXNG_ULTRASECRET=`openssl rand -hex 32`
+	echo "export SEARXNG_ULTRASECRET='${SEARXNG_ULTRASECRET}'" >> $PWD/.env
+	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "SEARXNG_ULTRASECRET"
+fi
+
+check_update_variable "Enter your searxng subdomain (like search) :" SEARXNG_SUBDOMAIN
+

@@ -8,12 +8,6 @@
   [entryPoints.websecure]
     address = ":443"
 
-  #[entryPoints.dns-ep]
-  #  address = ":53"
-  
-  #[entryPoints.dns-udp-ep]
-  #  address = ":53/udp"
- 
 [api]
   dashboard = true
 

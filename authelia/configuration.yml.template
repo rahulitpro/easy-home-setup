@@ -41,6 +41,8 @@ access_control:
       policy: two_factor
     - domain: ${HEIMDALL_SUBDOMAIN}.${DOMAIN}
       policy: bypass
+    - domain: ${SEARXNG_SUBDOMAIN}.${DOMAIN}
+      policy: bypass
 
 session:
   name: authelia_session

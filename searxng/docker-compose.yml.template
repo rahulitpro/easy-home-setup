@@ -1,0 +1,57 @@
+version: '3.7'
+
+services:
+
+  redis:
+    container_name: redis
+    image: "redis:alpine"
+    command: redis-server --save "" --appendonly "no"
+    networks:
+      - searxng
+    tmpfs:
+      - /var/lib/redis
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETGID
+      - SETUID
+      - DAC_OVERRIDE
+    restart: unless-stopped
+
+  searxng:
+    container_name: searxng
+    image: searxng/searxng
+    networks:
+      - searxng
+      - web
+    volumes:
+      - ${CODE_DIR}/searxng/searxng:/etc/searxng
+    environment:
+      - SEARXNG_BASE_URL=https://localhost/
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+    restart: unless-stopped
+    labels:
+      # web interface
+      - traefik.http.routers.search.rule=Host(`${SEARXNG_SUBDOMAIN}.${DOMAIN}`)
+      - traefik.http.routers.search.tls=true
+      - traefik.http.routers.search.entrypoints=websecure
+      - traefik.http.routers.search.tls.certresolver=lets-encrypt
+      - traefik.http.services.search.loadbalancer.server.port=8080
+      - traefik.http.routers.search.middlewares=authelia@docker
+
+networks:
+  searxng:
+    ipam:
+      driver: default
+  web:
+    external: true
