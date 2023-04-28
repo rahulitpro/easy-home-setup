@@ -1,0 +1,75 @@
+version: "3"
+
+networks:
+  web:
+    external: true
+  internal:
+    external: false
+
+volumes:
+  db_data:
+  wp_data:
+
+services:
+  blog:
+    image: wordpress
+    container_name: blog
+    volumes:
+      - wp_data:/var/www/html
+    environment:
+      - WORDPRESS_DB_HOST=mysql
+      - WORDPRESS_DB_USER=wpusr
+      - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
+      - WORDPRESS_DB_NAME=wpdb
+    labels:
+      - "traefik.http.routers.blog.rule=Host(`${DOMAIN}`) || Host(`${WORDPRESS_SUBDOMAIN}.${DOMAIN}`)"
+      - traefik.http.routers.blog.entryPoints=websecure
+      - traefik.http.routers.blog.tls=true
+      - traefik.http.routers.blog.tls.certresolver=lets-encrypt
+      - traefik.port=80
+        #      - "traefik.http.routers.blog.middlewares=my-whitelist@file"
+      - traefik.http.routers.blog.middlewares=authelia@docker
+    networks:
+      - internal
+      - web
+    depends_on:
+      - mysql
+    restart: unless-stopped
+
+  mysql:
+    image: mysql 
+    container_name: mysql
+    command: '--default-authentication-plugin=mysql_native_password'
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=wpdb
+      - MYSQL_USER=wpusr
+      - MYSQL_PASSWORD=${WORDPRESS_DB_PASSWORD}
+    expose:
+      - 3306
+      - 33060
+    networks:
+      - internal
+    labels:
+      - traefik.enable=false
+    restart: unless-stopped
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    labels:
+      - traefik.http.routers.adminer.rule=Host(`${ADMINER_SUBDOMAIN}.${DOMAIN}`)
+      - traefik.http.routers.adminer.entryPoints=websecure
+      - traefik.http.routers.adminer.tls=true
+      - traefik.http.routers.adminer.tls.certresolver=lets-encrypt
+      - traefik.port=8080
+      - traefik.http.routers.adminer.middlewares=my-whitelist@file
+      - traefik.http.routers.adminer.middlewares=authelia@docker
+    networks:
+      - internal
+      - web
+    depends_on:
+      - mysql
+    restart: unless-stopped

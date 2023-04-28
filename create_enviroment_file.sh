@@ -103,3 +103,8 @@ fi
 
 check_update_variable "Enter your searxng subdomain (like search) :" SEARXNG_SUBDOMAIN
 
+check_update_variable "Enter your wordpress subdomain (like www) :" WORDPRESS_SUBDOMAIN
+check_update_variable "Enter your adminer subdomain (like dbadmin) :" ADMINER_SUBDOMAIN
+check_update_variable "Enter your mysql db root user password :" MYSQL_ROOT_PASSWORD 
+check_update_variable "Enter your mysql db wordpress user (wpusr) password :" WORDPRESS_DB_PASSWORD 
+
