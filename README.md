@@ -17,3 +17,7 @@ Run PreReq script
 
 Run script to create enviroment file .env
 * sh create_enviroment_file.sh  
+
+
+errors
+* time="2023-04-28T17:24:48Z" level=error msg="middleware \"authelia@docker\" does not exist" entryPointName=websecure routerName=monitor@docker

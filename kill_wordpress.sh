@@ -1,2 +1,2 @@
 #!/bin/bash
-docker-compose -f worldpress/docker-compose.yml down
+docker-compose -f wordpress/docker-compose.yml down

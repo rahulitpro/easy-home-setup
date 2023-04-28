@@ -17,7 +17,7 @@ services:
     volumes:
       - wp_data:/var/www/html
     environment:
-      - WORDPRESS_DB_HOST=mysql
+      - WORDPRESS_DB_HOST=mariadb
       - WORDPRESS_DB_USER=wpusr
       - WORDPRESS_DB_PASSWORD=${WORDPRESS_DB_PASSWORD}
       - WORDPRESS_DB_NAME=wpdb
@@ -33,12 +33,12 @@ services:
       - internal
       - web
     depends_on:
-      - mysql
+      - mariadb 
     restart: unless-stopped
 
   mariadb:
     image: mariadb 
-    container_name: mysql
+    container_name: mariadb 
     command: '--default-authentication-plugin=mysql_native_password'
     volumes:
       - db_data:/var/lib/mysql
@@ -71,5 +71,5 @@ services:
       - internal
       - web
     depends_on:
-      - mysql
+      - mariadb 
     restart: unless-stopped
