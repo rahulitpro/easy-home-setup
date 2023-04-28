@@ -1,17 +1,16 @@
-################################################################
-# Traefix Dashboard with Let's encrypt certificate
-################################################################
+[http.middlewares.simpleAuth.basicAuth]
+  users = [
+    "${TRAEFIK_PASSWORD}"
+  ]
+
 [http.routers.api]
   rule = "Host(`${TRAEFIK_SUBDOMAIN}.${DOMAIN}`)"
   entrypoints = ["websecure"]
+  middlewares = ["simpleAuth"]
   service = "api@internal"
   [http.routers.api.tls]
     certResolver = "lets-encrypt"
 
-
-###########################################################################
-# Public CIDR for home network to restrict some of the services from public
-###########################################################################
 [http.middlewares]
   [http.middlewares.my-whitelist.ipWhiteList]
     sourceRange = ["${HOME_CIDR}"]

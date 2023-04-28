@@ -1,0 +1,30 @@
+version: "2.1"
+
+networks:
+  web:
+    external: true
+
+volumes:
+  config:
+services:
+  heimdall:
+    image: lscr.io/linuxserver/heimdall
+    container_name: heimdall
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${USER_TIMEZONE}
+    volumes:
+      - config:/config
+    restart: unless-stopped
+    networks:
+      - web
+    labels:
+      # web interface
+      - "traefik.http.routers.heimdall.rule=Host(`${HEIMDALL_SUBDOMAIN}.${DOMAIN}`)"
+      - "traefik.http.routers.heimdall.tls=true"
+      - "traefik.http.routers.heimdall.entrypoints=websecure"
+      - "traefik.http.routers.heimdall.tls.certresolver=lets-encrypt"
+      - "traefik.http.services.heimdall.loadbalancer.server.port=80"
+      - "traefik.http.routers.heimdall.middlewares=my-whitelist@file"
+      - 'traefik.http.routers.heimdall.middlewares=authelia@docker'

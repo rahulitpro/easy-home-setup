@@ -9,8 +9,8 @@
 users:
   rahul:
     displayname: "${DISPLAY_NAME}"
-    password: "${AUTHELIA_PASSWORD}"
-    email: "${LETSENCRYPT_EMAIL}"
+    password: "${AUTHELIA_PASSWORD}" 
+    email: ${LETSENCRYPT_EMAIL}
     groups:
       - admins
       - dev

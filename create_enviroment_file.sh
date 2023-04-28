@@ -15,6 +15,28 @@ else
 	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "CODE_DIR"
 fi
 
+found=`cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "PUID" | wc -l` > /dev/null 2>&1
+if [ $found -gt 0 ]
+then
+	echo "Variable PUID, already defined"
+	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "PUID"
+else
+	PUID=`cat /etc/passwd | grep $USER | awk -F ":" '{print $3}'`
+	echo "export PUID='${PUID}'">> $PWD/.env
+	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "PUID"
+fi
+
+found=`cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "PGID" | wc -l` > /dev/null 2>&1
+if [ $found -gt 0 ]
+then
+        echo "Variable PGID, already defined"
+        cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "PGID"
+else
+        PGID=`cat /etc/passwd | grep $USER | awk -F ":" '{print $4}'`
+        echo "export PGID='${PGID}'">> $PWD/.env
+        cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "PGID"
+fi
+
 check_update_variable(){
 	found=`cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "${2}" | wc -l` > /dev/null 2>&1
 	if [ $found -gt 0 ]
@@ -34,6 +56,20 @@ check_update_variable "Enter your timezone (like America/Toronto) :" USER_TIMEZO
 check_update_variable "Enter your main domain name with tld (like example.com) :" DOMAIN
 check_update_variable "Enter your traefik subdomain name for traefik dashboard (like traefik) :" TRAEFIK_SUBDOMAIN
 check_update_variable "Enter your Public CIDR for home network to restrict some of the services from public (like 12.34.56.78/32) :" HOME_CIDR 
+
+found=`cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "TRAEFIK_PASSWORD" | wc -l` > /dev/null 2>&1
+if [ $found -gt 0 ]
+then
+        echo "Variable TRAEFIK_PASSWORD, already defined"
+	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "TRAEFIK_PASSWORD"
+else
+	read -p "Enter your traefik password, this script will assume your username as admin:" TRAEFIK_PASSWORD
+	TRAEFIK_PASSWORD=`htpasswd -nbB admin ${TRAEFIK_PASSWORD}`
+	echo "export TRAEFIK_PASSWORD='${TRAEFIK_PASSWORD}'" >> $PWD/.env
+	cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "TRAEFIK_PASSWORD"
+fi
+
+
 check_update_variable "Enter your authelia subdomain name for authentication url (like auth) :" AUTHELIA_SUBDOMAIN 
 
 found=`cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "AUTHELIA_PASSWORD" | wc -l` > /dev/null 2>&1
@@ -52,3 +88,4 @@ fi
 
 check_update_variable "Enter your authelia jwt secret :" AUTHELIA_JWT_SECRET 
 check_update_variable "Enter your authelia storage encryption key :" AUTHELIA_STORAGE_KEY 
+check_update_variable "Enter your heimdell subdomain (like dash) :" HEIMDALL_SUBDOMAIN 

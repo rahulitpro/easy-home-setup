@@ -10,8 +10,8 @@ log:
   level: debug
 theme: dark
 # This secret can also be set using the env variables AUTHELIA_JWT_SECRET_FILE
-jwt_secret: ${AUTHELIA_JWT_SECRET} 
-default_redirection_url: https://${AUTHELIA_SUBDOMAIN}.${DOMAIN} 
+jwt_secret: ${AUTHELIA_JWT_SECRET}
+default_redirection_url: https://${AUTHELIA_SUBDOMAIN}.${DOMAIN}
 totp:
   issuer: authelia.com
 
@@ -35,10 +35,12 @@ access_control:
   default_policy: deny
   rules:
     # Rules applied to everyone
-    #- domain: ${TRAEFIK_SUBDOMAIN}.${DOMAIN} 
-    #  policy: two_factor 
-    #- domain: ${AUTHELIA_SUBDOMAIN}.${DOMAIN} 
-    #  policy: two_factor 
+    - domain: ${AUTHELIA_SUBDOMAIN}.${DOMAIN}
+      policy: two_factor
+    - domain: ${TRAEFIK_SUBDOMAIN}.${DOMAIN}
+      policy: two_factor
+    - domain: ${HEIMDALL_SUBDOMAIN}.${DOMAIN}
+      policy: bypass
 
 session:
   name: authelia_session
@@ -74,4 +76,3 @@ notifier:
   #   sender: admin@example.com
   filesystem:
     filename: /config/notification.txt
-...

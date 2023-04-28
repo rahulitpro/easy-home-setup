@@ -1,9 +1,5 @@
 version: '3'
 
-networks:
-  web:
-    external: true
-
 services:
   traefik:
     image: traefik
@@ -20,10 +16,16 @@ services:
       - web
     restart: unless-stopped
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.traefik.rule=Host(`${TRAEFIK_SUBDOMAIN}.${DOMAIN}`)
-      - traefik.http.routers.traefik.entryPoints=websecure
-      - traefik.http.routers.traefik.tls=true
-      - traefik.http.routers.traefik.tls.certresolver=lets-encrypt
-      - traefik.http.services.traefik.loadbalancer.server.port=80
-      - traefik.http.routers.traefik.middlewares=my-whitelist@file
+      - 'traefik.enable=true'
+      - 'traefik.http.routers.monitor.rule=Host(`${TRAEFIK_SUBDOMAIN}.${DOMAIN}`)'
+      - 'traefik.http.routers.monitor.entryPoints=websecure'
+      - 'traefik.http.routers.monitor.tls=true'
+      - "traefik.http.routers.monitor.tls.certresolver=lets-encrypt"
+      - "traefik.http.services.monitor.loadbalancer.server.port=80"
+      - 'traefik.http.routers.monitor.service=api@internal'
+      - "traefik.http.routers.monitor.middlewares=my-whitelist@file"
+      - 'traefik.http.routers.monitor.middlewares=authelia@docker'
+
+networks:
+  web:
+    external: true

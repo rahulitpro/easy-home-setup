@@ -15,3 +15,8 @@ echo "###########################"
 echo "# Creating docker network #"
 echo "###########################"
 sudo docker network create web
+
+echo "############################"
+echo "# Installing apache2-utils #"
+echo "############################"
+sudo apt-get install apache2-utils -y
