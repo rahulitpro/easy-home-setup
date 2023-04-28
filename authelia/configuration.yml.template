@@ -35,6 +35,8 @@ access_control:
   default_policy: deny
   rules:
     # Rules applied to everyone
+    - domain: ${DOMAIN}
+      policy: bypass
     - domain: ${AUTHELIA_SUBDOMAIN}.${DOMAIN}
       policy: two_factor
     - domain: ${TRAEFIK_SUBDOMAIN}.${DOMAIN}
@@ -43,6 +45,10 @@ access_control:
       policy: bypass
     - domain: ${SEARXNG_SUBDOMAIN}.${DOMAIN}
       policy: bypass
+    - domain: ${WORDPRESS_SUBDOMAIN}.${DOMAIN}
+      policy: bypass
+    - domain: ${ADMINER_SUBDOMAIN}.${DOMAIN}
+      policy: two_factor 
 
 session:
   name: authelia_session
