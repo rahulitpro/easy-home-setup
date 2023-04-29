@@ -105,6 +105,11 @@ check_update_variable "Enter your searxng subdomain (like search) :" SEARXNG_SUB
 
 check_update_variable "Enter your wordpress subdomain (like www) :" WORDPRESS_SUBDOMAIN
 check_update_variable "Enter your adminer subdomain (like dbadmin) :" ADMINER_SUBDOMAIN
-check_update_variable "Enter your mysql db root user password :" MYSQL_ROOT_PASSWORD 
-check_update_variable "Enter your mysql db wordpress user (wpusr) password :" WORDPRESS_DB_PASSWORD 
+check_update_variable "Enter your mariadb db root user password :" MYSQL_ROOT_PASSWORD 
+check_update_variable "Enter your mariadb db wordpress user (wpusr) password :" WORDPRESS_DB_PASSWORD 
 
+check_update_variable "Enter your jellyfin subdomain (link media) :" JELLYFIN_SUBDOMAIN 
+
+
+check_update_variable "Enter your nextcloud subdomain (link next) :" NEXTCLOUD_SUBDOMAIN 
+check_update_variable "Enter your mariadb db nextcloud user (ncusr) password :" NEXTCLOUD_DB_PASSWORD 

@@ -1,0 +1,33 @@
+version: "3"
+
+networks:
+  web:
+    external: true
+
+volumes:
+  config:
+  cache:
+services:
+  media:
+    image: jellyfin/jellyfin
+    container_name: media
+    environment:
+      - PUID=${PUID}
+      - GUID=${GUID}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - config:/config
+      - cache:/cache
+      - ${CODE_DIR}/jellyfin/media:/media
+    networks:
+      - web
+    expose:
+      - 8096
+    labels:
+      - traefik.http.routers.media.rule=Host(`${JELLYFIN_SUBDOMAIN}.${DOMAIN}`)
+      - traefik.http.routers.media.tls=true
+      - traefik.http.routers.media.entryPoints=websecure
+      - traefik.http.routers.media.tls.certresolver=lets-encrypt
+      - traefik.port=8096
+      - traefik.http.routers.media.middlewares=authelia@docker
+    restart: unless-stopped

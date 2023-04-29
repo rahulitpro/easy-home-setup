@@ -3,11 +3,10 @@ version: "3"
 networks:
   web:
     external: true
-  internal:
-    external: false
+  mariadb_default:
+    external: true 
 
 volumes:
-  db_data:
   wp_data:
 
 services:
@@ -27,49 +26,8 @@ services:
       - traefik.http.routers.blog.tls=true
       - traefik.http.routers.blog.tls.certresolver=lets-encrypt
       - traefik.port=80
-        #      - "traefik.http.routers.blog.middlewares=my-whitelist@file"
       - traefik.http.routers.blog.middlewares=authelia@docker
     networks:
-      - internal
+      - mariadb_default 
       - web
-    depends_on:
-      - mariadb 
-    restart: unless-stopped
-
-  mariadb:
-    image: mariadb 
-    container_name: mariadb 
-    command: '--default-authentication-plugin=mysql_native_password'
-    volumes:
-      - db_data:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=wpdb
-      - MYSQL_USER=wpusr
-      - MYSQL_PASSWORD=${WORDPRESS_DB_PASSWORD}
-    expose:
-      - 3306
-      - 33060
-    networks:
-      - internal
-    labels:
-      - traefik.enable=false
-    restart: unless-stopped
-
-  adminer:
-    image: adminer
-    container_name: adminer
-    labels:
-      - traefik.http.routers.adminer.rule=Host(`${ADMINER_SUBDOMAIN}.${DOMAIN}`)
-      - traefik.http.routers.adminer.entryPoints=websecure
-      - traefik.http.routers.adminer.tls=true
-      - traefik.http.routers.adminer.tls.certresolver=lets-encrypt
-      - traefik.port=8080
-      - traefik.http.routers.adminer.middlewares=my-whitelist@file
-      - traefik.http.routers.adminer.middlewares=authelia@docker
-    networks:
-      - internal
-      - web
-    depends_on:
-      - mariadb 
     restart: unless-stopped

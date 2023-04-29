@@ -6,8 +6,6 @@ services:
     container_name: redis
     image: "redis:alpine"
     command: redis-server --save "" --appendonly "no"
-    networks:
-      - searxng
     tmpfs:
       - /var/lib/redis
     cap_drop:
@@ -17,12 +15,13 @@ services:
       - SETUID
       - DAC_OVERRIDE
     restart: unless-stopped
+    labels:
+      - "traefik.enable=false"
 
   searxng:
     container_name: searxng
     image: searxng/searxng
     networks:
-      - searxng
       - web
     volumes:
       - ${CODE_DIR}/searxng/searxng:/etc/searxng
@@ -50,8 +49,5 @@ services:
       - traefik.http.routers.search.middlewares=authelia@docker
 
 networks:
-  searxng:
-    ipam:
-      driver: default
   web:
     external: true

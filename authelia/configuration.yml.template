@@ -49,6 +49,10 @@ access_control:
       policy: bypass
     - domain: ${ADMINER_SUBDOMAIN}.${DOMAIN}
       policy: two_factor 
+    - domain: ${JELLYFIN_SUBDOMAIN}.${DOMAIN}
+      policy: bypass
+    - domain: ${NEXTCLOUD_SUBDOMAIN}.${DOMAIN}
+      policy: two_factor 
 
 session:
   name: authelia_session

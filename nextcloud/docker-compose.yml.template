@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+
+networks:
+  web:
+    external: true
+  mariadb_default:
+    external: true
+
+volumes:
+  data:
+
+services:
+
+  nextcloud:
+    container_name: nextcloud
+    restart: unless-stopped
+    image: nextcloud
+    volumes:
+      - data:/var/www/html
+    networks:
+      - web
+      - mariadb_default
+    environment:
+      MYSQL_DATABASE: ncdb
+      MYSQL_USER: ncusr
+      MYSQL_PASSWORD: ${NEXTCLOUD_DB_PASSWORD}
+      MYSQL_HOST: mariadb
+      NEXTCLOUD_TRUSTED_DOMAINS: ${NEXTCLOUD_SUBDOMAIN}.${DOMAIN} 
+      OVERWRITEHOST: ${NEXTCLOUD_SUBDOMAIN}.${DOMAIN} 
+      OVERWRITEPROTOCOL: https 
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      # Nextcloud URL (replace with yours)
+      - "traefik.http.routers.nextcloud.rule=Host(`${NEXTCLOUD_SUBDOMAIN}.${DOMAIN}`)"
+      - "traefik.http.routers.nextcloud.service=nextcloud"
+      - "traefik.http.routers.nextcloud.entrypoints=websecure"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=80"
+      - "traefik.http.routers.nextcloud.tls=true"
+      - "traefik.http.routers.nextcloud.tls.certresolver=lets-encrypt"
+      - "traefik.http.services.nextcloud.loadbalancer.passhostheader=true"
+      - "traefik.http.routers.nextcloud.middlewares=compresstraefik"
+      - "traefik.http.middlewares.compresstraefik.compress=true"
+      - "traefik.http.routers.nextcloud.middlewares=my-whitelist@file"
+      - "traefik.http.routers.nextcloud.middlewares=authelia@docker"
