@@ -1,5 +1,5 @@
 echo "#######################################"
-echo "# Creating wordpress database and user #"
+echo "# Creating nextcloud database and user #"
 echo "#######################################"
 
 echo "CREATE DATABASE IF NOT EXISTS ncdb;

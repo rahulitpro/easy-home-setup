@@ -6,3 +6,4 @@ cme.json
 db.sqlite3
 *.txt
 acme.json
+*.run
