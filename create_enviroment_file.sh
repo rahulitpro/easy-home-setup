@@ -113,3 +113,6 @@ check_update_variable "Enter your jellyfin subdomain (link media) :" JELLYFIN_SU
 
 check_update_variable "Enter your nextcloud subdomain (link next) :" NEXTCLOUD_SUBDOMAIN 
 check_update_variable "Enter your mariadb db nextcloud user (ncusr) password :" NEXTCLOUD_DB_PASSWORD 
+
+check_update_variable "Enter your pihole dashboard subdomain (link dns) :" PIHOLE_SUBDOMAIN 
+check_update_variable "Enter your pihole password :" PIHOLE_PASSWORD 

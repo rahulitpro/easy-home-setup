@@ -14,3 +14,8 @@
 [http.middlewares]
   [http.middlewares.my-whitelist.ipWhiteList]
     sourceRange = ["${HOME_CIDR}"]
+
+[tcp.middlewares]
+  [tcp.middlewares.tcp-whitelist.ipWhiteList]
+    sourceRange = ["${HOME_CIDR}"]
+

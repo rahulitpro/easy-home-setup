@@ -1,0 +1,43 @@
+version: "3"
+
+networks:
+  web:
+    external: true
+
+volumes:
+  etc:
+services:
+  pihole:
+    image: pihole/pihole
+    container_name: pihole
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    environment:
+      TZ: '${USER_TIMEZONE}'
+      WEBPASSWORD: ${PIHOLE_PASSWORD}
+    volumes:
+      - etc:/etc
+    networks:
+      - web
+    restart: unless-stopped
+    labels:
+      # web interface
+      - "traefik.http.routers.pihole.rule=Host(`${PIHOLE_SUBDOMAIN}.${DOMAIN}`)"
+      - "traefik.http.routers.pihole.tls=true"
+      - "traefik.http.routers.pihole.entrypoints=websecure"
+      - "traefik.http.routers.pihole.tls.certresolver=lets-encrypt"
+      - "traefik.http.services.pihole.loadbalancer.server.port=80"
+      - "traefik.http.routers.pihole.middlewares=my-whitelist@file"
+      - "traefik.http.routers.pihole.middlewares=authelia@docker"
+      ## TCP Routers/Service
+      - "traefik.tcp.routers.pihole-rtr.entrypoints=dns-ep"
+      - "traefik.tcp.routers.pihole-rtr.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.pihole-rtr.service=pihole-svc"
+      - "traefik.tcp.services.pihole-svc.loadbalancer.server.port=53"
+      - "traefik.tcp.routers.pihole-rtr.middlewares=tcp-whitelist@file"
+
+      ## UDP Routers/Services
+      - "traefik.udp.routers.pihole-udp-rtr.entrypoints=dns-udp-ep"
+      - "traefik.udp.routers.pihole-udp-rtr.service=pihole-udp-svc"
+      - "traefik.udp.services.pihole-udp-svc.loadbalancer.server.port=53"

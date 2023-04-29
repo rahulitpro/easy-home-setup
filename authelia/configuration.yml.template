@@ -53,6 +53,8 @@ access_control:
       policy: bypass
     - domain: ${NEXTCLOUD_SUBDOMAIN}.${DOMAIN}
       policy: two_factor 
+    - domain: ${PIHOLE_SUBDOMAIN}.${DOMAIN}
+      policy: two_factor 
 
 session:
   name: authelia_session
