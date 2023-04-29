@@ -12,6 +12,7 @@ modify ingress rules in security list/NSG in cloud
 * add port 44/TCP available for world 
 * add port 53/TCP available only for home public CIDR address like (12.34.56.78/32) 
 * add port 53/UDP available only for home public CIDR address like (12.34.56.78/32) 
+* add port 51820/UDP available for world so you can connect wireguard vpn from anyware 
 
 Run PreReq script
 * sh install_prereqs.sh

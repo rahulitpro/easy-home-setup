@@ -14,6 +14,9 @@
   [entryPoints.dns-udp-ep]
     address = ":53/udp"
 
+  [entryPoints.wg-udp-ep]
+    address = ":51820/udp"
+
 [api]
   dashboard = true
 

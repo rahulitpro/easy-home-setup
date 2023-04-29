@@ -116,3 +116,5 @@ check_update_variable "Enter your mariadb db nextcloud user (ncusr) password :" 
 
 check_update_variable "Enter your pihole dashboard subdomain (link dns) :" PIHOLE_SUBDOMAIN 
 check_update_variable "Enter your pihole password :" PIHOLE_PASSWORD 
+
+check_update_variable "Enter your wireguard subdomain (link wire) :" WIREGUARD_SUBDOMAIN 

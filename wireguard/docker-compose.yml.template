@@ -1,0 +1,41 @@
+---
+version: "2.1"
+
+networks:
+  web:
+    external: true
+
+volumes:
+  config:
+services:
+  wireguard:
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${USER_TIMEZONE}
+      - SERVERURL=${WIREGUARD_SUBDOMAIN}.${DOMAIN} #optional
+      - SERVERPORT=51820 #optional
+      - PEERS=1 #optional
+      - PEERDNS=auto #optional
+      - INTERNAL_SUBNET=10.13.13.0 #optional
+      - ALLOWEDIPS=0.0.0.0/0 #optional
+      - PERSISTENTKEEPALIVE_PEERS= #optional
+      - LOG_CONFS=true #optional
+    networks:
+      - web
+    volumes:
+      - config:/config
+      - /lib/modules:/lib/modules
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    restart: unless-stopped
+    labels:
+      ## UDP Routers/Services
+      - "traefik.udp.routers.wireguard-udp-rtr.entrypoints=wg-udp-ep"
+      - "traefik.udp.routers.wireguard-udp-rtr.service=wireguard-udp-svc"
+      - "traefik.udp.services.wireguard-udp-svc.loadbalancer.server.port=51820"
+

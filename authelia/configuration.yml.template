@@ -55,6 +55,8 @@ access_control:
       policy: two_factor 
     - domain: ${PIHOLE_SUBDOMAIN}.${DOMAIN}
       policy: two_factor 
+    - domain: ${WIREGUARD_SUBDOMAIN}.${DOMAIN}
+      policy: bypass
 
 session:
   name: authelia_session
