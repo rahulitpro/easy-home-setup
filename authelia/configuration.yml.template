@@ -42,7 +42,7 @@ access_control:
     - domain: ${TRAEFIK_SUBDOMAIN}.${DOMAIN}
       policy: two_factor
     - domain: ${HEIMDALL_SUBDOMAIN}.${DOMAIN}
-      policy: bypass
+      policy: one_factor 
     - domain: ${SEARXNG_SUBDOMAIN}.${DOMAIN}
       policy: bypass
     - domain: ${WORDPRESS_SUBDOMAIN}.${DOMAIN}
