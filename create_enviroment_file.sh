@@ -71,6 +71,7 @@ fi
 
 
 check_update_variable "Enter your authelia subdomain name for authentication url (like auth) :" AUTHELIA_SUBDOMAIN 
+check_update_variable "Enter your authelia username :" AUTHELIA_USER 
 
 found=`cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "AUTHELIA_PASSWORD" | wc -l` > /dev/null 2>&1
 if [ $found -gt 0 ]

@@ -7,7 +7,7 @@
 
 # List of users
 users:
-  rahul:
+  ${AUTHELIA_USER}:
     displayname: "${DISPLAY_NAME}"
     password: "${AUTHELIA_PASSWORD}" 
     email: ${LETSENCRYPT_EMAIL}
