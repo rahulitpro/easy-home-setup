@@ -1,0 +1,28 @@
+version: "3"
+
+networks:
+  web:
+    external: true
+
+volumes:
+  data:
+
+services:
+  portainer:
+    image: portainer/portainer-ce:latest 
+    command: -H unix:///var/run/docker.sock
+    container_name: portainer 
+    volumes:
+      - data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+    labels:
+      - traefik.http.routers.portainer.rule=Host(`${PORTAINER_SUBDOMAIN}.${DOMAIN}`)
+      - traefik.http.routers.portainer.entryPoints=websecure
+      - traefik.http.services.portainer.loadbalancer.server.port=9000
+      - traefik.http.routers.portainer.tls.certresolver=lets-encrypt
+      - traefik.http.routers.portainer.service=portainer
+      - traefik.http.routers.portainer.middlewares=my-whitelist@file
+      - traefik.http.routers.portainer.middlewares=authelia@docker
+    networks:
+      - web

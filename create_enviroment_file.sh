@@ -89,6 +89,8 @@ fi
 
 check_update_variable "Enter your authelia jwt secret :" AUTHELIA_JWT_SECRET 
 check_update_variable "Enter your authelia storage encryption key :" AUTHELIA_STORAGE_KEY 
+check_update_variable "Enter your portainer subdomain name (like port) :" PORTAINER_SUBDOMAIN 
+check_update_variable "Enter your portainer edge subdomain name (like edge) :" PORTAINER_EDGE_SUBDOMAIN 
 check_update_variable "Enter your heimdell subdomain (like dash) :" HEIMDALL_SUBDOMAIN 
 
 found=`cat $PWD/.env | grep -v '^$' | grep -v '^#' | grep -w "SEARXNG_ULTRASECRET" | wc -l` > /dev/null 2>&1
