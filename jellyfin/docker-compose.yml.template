@@ -19,6 +19,7 @@ services:
       - config:/config
       - cache:/cache
       - ${CODE_DIR}/jellyfin/media:/media
+      - ${CODE_DIR}/jellyfin/drive:/drive
     networks:
       - web
     expose:
